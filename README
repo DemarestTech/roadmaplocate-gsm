@@ -3,4 +3,7 @@
 This repository contains code in `server` intended for deployment to the cloud,
 as well as some .ino sketches in `arduino` intended to be run on an Arduino Uno with a Seeed CAN Shield (I have the V1.2 one), with an AdaFruit Fona 800.
 
+# Installing
+
+Both the server and arduino sub-projects have several dependencies, which will not be managed automatically here.
 
