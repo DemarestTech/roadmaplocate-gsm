@@ -13,6 +13,10 @@ app:get("all_data", "/data", function()
     return "Data: <br />" .. tostring(inspect(app_data))
 end)
 
+app:get("clear", "/clear", function(self)
+    app_data = {}
+    return { redirect_to = self:url_for("all_data") }
+end)
 
 app:post("post_data", "/post", function(self)
     -- Keep the data from the post request
