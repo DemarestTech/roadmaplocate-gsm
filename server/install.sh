@@ -23,8 +23,9 @@ mkdir -p /symbolic
 ln -sf /usr/lib/x86_64-linux-gnu /symbolic/lib
 luarocks install luaossl CRYPTO_DIR=/symbolic CRYPTO_INCDIR=/usr/include
 
-# Install lapis
+# Install lapis and inspect
 luarocks install lapis
+luarocks install inspect
 
 
 ### Now install OpenResty ####
