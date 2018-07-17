@@ -1,15 +1,7 @@
 /*
 **************************************************
 *
-*
-*
-*
-*
-*
-*
-*
-*
-*
+* . RoadMapSense is the Arduino sketch for the embedded component of the RoadMapLocate Network
 *
 * . ORIGINAL LICENSE for FONA
   Written by Limor Fried/Ladyada for Adafruit Industries.
@@ -17,9 +9,7 @@
  ****************************************************/
 
 /*
-THIS CODE IS STILL IN PROGRESS!
-
-Open up the serial console on the Arduino at 115200 baud to interact with FONA
+Open up the serial console on the Arduino at 115200 baud
 
 Note that if you need to set a GPRS APN, username, and password scroll down to
 the commented section below at the end of the setup() function.
@@ -61,28 +51,28 @@ void setup() {
 
   fonaSerial->begin(4800);
   if (! fona.begin(*fonaSerial)) {
-    Serial.println(F("Couldn't find FONA"));
+    //Serial.println(F("Couldn't find FONA"));
     while (1);
   }
   type = fona.type();
-  Serial.println(F("FONA is OK"));
-  Serial.print(F("Found "));
-  switch (type) {
-    case FONA800L:
-      Serial.println(F("FONA 800L")); break;
-    case FONA800H:
-      Serial.println(F("FONA 800H")); break;
-    case FONA808_V1:
-      Serial.println(F("FONA 808 (v1)")); break;
-    case FONA808_V2:
-      Serial.println(F("FONA 808 (v2)")); break;
-    case FONA3G_A:
-      Serial.println(F("FONA 3G (American)")); break;
-    case FONA3G_E:
-      Serial.println(F("FONA 3G (European)")); break;
-    default: 
-      Serial.println(F("???")); break;
-  }
+//  Serial.println(F("FONA is OK"));
+//  Serial.print(F("Found "));
+//  switch (type) {
+//    case FONA800L:
+//      Serial.println(F("FONA 800L")); break;
+//    case FONA800H:
+//      Serial.println(F("FONA 800H")); break;
+//    case FONA808_V1:
+//      Serial.println(F("FONA 808 (v1)")); break;
+//    case FONA808_V2:
+//      Serial.println(F("FONA 808 (v2)")); break;
+//    case FONA3G_A:
+//      Serial.println(F("FONA 3G (American)")); break;
+//    case FONA3G_E:
+//      Serial.println(F("FONA 3G (European)")); break;
+//    default: 
+//      Serial.println(F("???")); break;
+//  }
   
   // Print module IMEI number.
   char imei[16] = {0}; // MUST use a 16 character buffer for IMEI!
@@ -122,24 +112,16 @@ void loop() {
 
   /* Get Location Data (from cell) */
         uint16_t returncode;
+        fona.getGSMLoc(&returncode, replybuffer, 250);
 
-        if (!fona.getGSMLoc(&returncode, replybuffer, 250))
-          Serial.println(F("Failed!"));
-        if (returncode == 0) {
-          Serial.println(replybuffer);
-        } else {
-          Serial.print(F("Fail code #")); Serial.println(returncode);
-        }
-
-  
 /* POST UPDATE */
 
         // Post data to website
         uint16_t statuscode;
         int16_t length;
 
-//        flushSerial();
-        Serial.println(F("****"));
+        flushSerial();
+        //Serial.println(F("****"));
         if (!fona.HTTP_POST_start("roadmaplocate.com/post", F("application/x-www-form-urlencoded"), 
             (uint8_t *) replybuffer, strlen(replybuffer), &statuscode, (uint16_t *)&length) && (statuscode != 302)) {
           Serial.println("Failed!");
@@ -160,7 +142,7 @@ void loop() {
             if (! length) break;
           }
         }
-        Serial.println(F("\n****"));
+        //Serial.println(F("\n****"));
         fona.HTTP_POST_end();
 
 /* END POST UPDATE */
